@@ -39,8 +39,17 @@ const applyJobSchema=new mongoose.Schema({
   appliedAt:{
     type:Date,
     default:Date.now()
-  }
+  },
+  status: {
+    type: String,
+    enum: ["Pending", "Approved", "Rejected","Scheduled"],
+    default: "Pending",
+  },
+  
+
 })
 const jobApplication=mongoose.model('JobApplication',applyJobSchema)
 export default jobApplication;
+
+
 

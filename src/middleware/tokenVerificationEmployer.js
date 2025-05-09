@@ -20,6 +20,7 @@ export const tokenVerificationEmployer = async (req, res, next) => {
     }
 
     req.user = employer; // attach employer to req.user
+    
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid Token", error: err.message });

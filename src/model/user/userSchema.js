@@ -43,6 +43,7 @@ const userschema = new mongoose.Schema(
       type:String,
       default:""
     },
+    status: { type: String, default: 'Pending' },
 
     
     otp: { type: Number },

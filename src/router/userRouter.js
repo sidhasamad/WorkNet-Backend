@@ -5,8 +5,9 @@ import { getUserJob, getUserJobId } from '../controllers/user/userJobsController
 import { getuserSave, savedDelete, userSave } from '../controllers/user/userSavedController.js'
 import { verifyTokenEmployee } from '../middleware/tokenVerificationEmployee.js'
 import { EmployeeProfile, employeeProfileDetails, GetAppliedJobsCount, UpdateEmployeeProfile, UploadProfilePicture,} from '../controllers/user/userProfileController.js'
-import { ApplyJob } from '../controllers/user/userApplyJobController.js'
+import { ApplyJob, getAppliedJobs, getNotifications, handleEmployeeStatus } from '../controllers/user/userApplyJobController.js'
 import { upload } from '../../config/cloudinary.js'
+import { getMarkOneAsRead, getUnreadCount, newNotification, notificationLength } from '../controllers/employer/ApplicantsController.js'
 // import { upload } from '../../config/cloudinary.js'
 
 const userRouter=express.Router()
@@ -28,5 +29,13 @@ userRouter.get('/employeeProfileDetails',verifyTokenEmployee,tryCatch(employeePr
 userRouter.get('/getappliedJobsCount',verifyTokenEmployee,tryCatch(GetAppliedJobsCount))
 userRouter.put('/updateEmployeeProfile',verifyTokenEmployee,tryCatch(UpdateEmployeeProfile))
 //====================================
-userRouter.post('/jobs/applyJob',upload.single('resume'),tryCatch(ApplyJob))
+userRouter.post('/jobs/applyJob',verifyTokenEmployee,upload.single('resume'),tryCatch(ApplyJob))
+userRouter.get('/jobs/getappliedJob',verifyTokenEmployee,tryCatch(getAppliedJobs))
+//================================notification======================
+userRouter.get('/notifications',verifyTokenEmployee,tryCatch(handleEmployeeStatus))
+userRouter.get('/getnotifications',verifyTokenEmployee,tryCatch(getNotifications))
+userRouter.get('/:userId',verifyTokenEmployee,tryCatch(notificationLength))
+userRouter.get('/unread/count/:userId',verifyTokenEmployee,tryCatch(getUnreadCount))
+userRouter.put('/mark-read/:id',verifyTokenEmployee,tryCatch(getMarkOneAsRead))
+userRouter.post('/newNotification',verifyTokenEmployee,tryCatch(newNotification))
 export default userRouter
